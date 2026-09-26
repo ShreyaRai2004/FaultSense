@@ -1,0 +1,17 @@
+.venv/
+__pycache__/
+*.py[cod]
+.DS_Store
+.env
+.ipynb_checkpoints/
+.pytest_cache/
+
+# Local/raw dataset (downloaded from UCI)
+data/*.csv
+
+# Trained model files
+models/*.joblib
+
+# Generated artifacts
+artifacts/*
+!artifacts/.gitkeep
