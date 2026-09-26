@@ -13,12 +13,31 @@ st.set_page_config(page_title="FaultSense", page_icon="⚙️", layout="wide")
 MODEL_PATH = Path("models/failure_model.joblib")
 ANOMALY_PATH = Path("models/anomaly_model.joblib")
 
+
+def prepare_models():
+    """Download the dataset and train models when running on a fresh deployment."""
+    if MODEL_PATH.exists() and ANOMALY_PATH.exists():
+        return
+
+    st.info("Preparing the machine-learning models for the first run...")
+
+    import download_data
+    import train
+
+    data_path = Path("data/ai4i2020.csv")
+
+    if not data_path.exists():
+        with st.spinner("Downloading the UCI AI4I 2020 dataset..."):
+            download_data.main()
+
+    with st.spinner("Training FaultSense models..."):
+        train.main()
+
+
 st.title("⚙️ FaultSense")
 st.caption("Predictive Maintenance & Machine Health Intelligence")
 
-if not MODEL_PATH.exists() or not ANOMALY_PATH.exists():
-    st.warning("Trained models are not available yet. Run `python download_data.py` and `python train.py` locally first.")
-    st.stop()
+prepare_models()
 
 model = joblib.load(MODEL_PATH)
 anomaly_model = joblib.load(ANOMALY_PATH)
@@ -30,8 +49,8 @@ with st.sidebar:
     product_type = st.selectbox("Machine Type", ["L", "M", "H"], index=1)
     air = st.number_input("Air Temperature [K]", 295.0, 305.0, 300.0, 0.1)
     process = st.number_input("Process Temperature [K]", 305.0, 315.0, 310.0, 0.1)
-    speed = st.number_input("Rotational Speed [rpm]", 1000, 3000, 1500, 10)
-    torque = st.number_input("Torque [Nm]", 5.0, 80.0, 40.0, 0.5)
+    speed = st.number_input("Rotational Speed [rpm]", 1000, 3000, 1500, 1)
+    torque = st.number_input("Torque [Nm]", 0.0, 100.0, 40.0, 0.1)
     wear = st.number_input("Tool Wear [min]", 0, 300, 100, 1)
     run = st.button("Assess Machine Health", type="primary", use_container_width=True)
 
