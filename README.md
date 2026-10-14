@@ -1,236 +1,113 @@
-# ⚙️ FaultSense — Predictive Maintenance & Machine Health Intelligence
+# FaultSense — Predictive Maintenance & Machine Health Intelligence
 
-**Python • XGBoost • Scikit-learn • SHAP-ready Explainability • Isolation Forest • FastAPI • Streamlit**
+[![Python](https://img.shields.io/badge/Python-3.x-blue?logo=python&logoColor=white)](https://www.python.org/)
+[![XGBoost](https://img.shields.io/badge/ML-XGBoost-orange)](https://xgboost.readthedocs.io/)
+[![FastAPI](https://img.shields.io/badge/API-FastAPI-009688?logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
+[![Streamlit](https://img.shields.io/badge/UI-Streamlit-FF4B4B?logo=streamlit&logoColor=white)](https://streamlit.io/)
 
-FaultSense is an end-to-end machine-learning project for predictive maintenance. It learns from machine operating conditions to estimate **failure risk**, identify **abnormal operating patterns**, and convert those predictions into an interpretable **machine-health status and maintenance recommendation**.
+FaultSense is an end-to-end machine learning application for predicting machine failure risk from operational sensor data.
 
-The project is intentionally designed as a focused ML engineering system: the model, evaluation metrics, feature engineering, imbalance handling, anomaly detection, and application layer are all reproducible and explainable.
+The system combines data preprocessing, feature engineering, XGBoost classification, anomaly detection, SHAP explainability, machine health assessment, maintenance recommendations, FastAPI REST APIs, and an interactive Streamlit dashboard.
 
-> **Important:** The benchmark dataset is synthetic. This project demonstrates the ML workflow and should not be used as an industrial safety or maintenance-control system.
+## 🚀 Live Demo
 
-## Why this project is different
+[Open FaultSense Live Demo](https://faultsense-6qjtnlhbg3xxvkh8jcahrq.streamlit.app/)
 
-A basic student project often stops at `sensor data → classifier → accuracy`.
+## ✨ Key Features
 
-FaultSense adds a more realistic decision pipeline:
+- Machine failure prediction using XGBoost
+- Feature engineering from machine sensor measurements
+- Random Forest baseline model comparison
+- Isolation Forest anomaly detection
+- SHAP-based model explainability
+- Normal, Warning, and Critical machine-health classification
+- Automated maintenance recommendations
+- FastAPI REST API for predictions
+- Interactive Streamlit dashboard
+- Data validation and preprocessing pipeline
 
-`Machine Data → Feature Engineering → Failure Model → Anomaly Detection → Health Status → Maintenance Recommendation`
-
-Key design choices:
-
-- Compares a **Random Forest baseline** against **XGBoost**.
-- Uses class-imbalance handling because machine failures are rare in the benchmark.
-- Reports **precision, recall, F1, ROC-AUC and PR-AUC**, not accuracy alone.
-- Engineers operating-condition features such as temperature delta, power proxy, thermal load and wear load.
-- Uses **Isolation Forest** for an independent anomaly signal.
-- Converts model outputs into a transparent rule-based maintenance recommendation.
-- Provides both a **Streamlit application** and a lightweight **FastAPI inference endpoint**.
-
-## Machine-learning workflow
-
-1. Download the UCI AI4I 2020 dataset.
-2. Remove identifiers and failure-mode target columns from model inputs.
-3. Engineer domain-inspired operating-condition features.
-4. Create stratified train/validation/test splits.
-5. Train a Random Forest baseline.
-6. Train an XGBoost classifier with class-imbalance weighting.
-7. Evaluate on the untouched test set.
-8. Train Isolation Forest for anomaly detection.
-9. Save reproducible model artifacts and evaluation metrics.
-10. Serve predictions through Streamlit/FastAPI.
-
-## Dataset
-
-**AI4I 2020 Predictive Maintenance Dataset** — UCI Machine Learning Repository, Dataset 601.
-
-The dataset contains 10,000 observations of machine operating conditions, including air/process temperature, rotational speed, torque and tool wear, together with machine-failure labels.
-
-Source: https://archive.ics.uci.edu/dataset/601/ai4i+2020+predictive+maintenance+dataset
-DOI: https://doi.org/10.24432/C5HS5C
-License: **CC BY 4.0**
-
-The dataset is downloaded at setup time rather than redistributed inside this repository.
-
-## Project structure
+## 🧠 Machine Learning Workflow
 
 ```text
-FaultSense/
-├── app.py                     # Streamlit application
-├── api.py                     # FastAPI inference service
-├── download_data.py           # Reproducible UCI data download
-├── train.py                   # Training + evaluation pipeline
-├── requirements.txt
-├── LICENSE                    # MIT license for this project code
-├── data/
-│   └── README.md
-├── models/                    # Generated trained models
-├── artifacts/                 # Generated metrics and run metadata
-└── src/
-    ├── model.py               # Model construction/training
-    ├── preprocess.py          # Cleaning + feature engineering
-    └── predict.py             # Inference + health decision logic
+Sensor Data
+     ↓
+Data Cleaning & Validation
+     ↓
+Feature Engineering
+     ↓
+Train / Validation / Test Split
+     ↓
+Random Forest Baseline
+     ↓
+XGBoost Failure Prediction
+     ↓
+Failure Probability
+     ↓
+Isolation Forest Anomaly Detection
+     ↓
+SHAP Explainability
+     ↓
+Machine Health Assessment
+     ↓
+Maintenance Recommendation
 ```
+## 🤖 Model Performance
 
-## Local setup
+XGBoost is used as the primary machine-failure prediction model, with Random Forest used as a baseline.
 
-### 1. Clone the repository
+| Metric | XGBoost |
+|---|---:|
+| Accuracy | 98.90% |
+| Precision | 84.85% |
+| Recall | 82.35% |
+| F1 Score | 83.58% |
+| ROC-AUC | 0.9719 |
+| PR-AUC | 0.8794 |
 
-```bash
-git clone <your-github-repository-url>
-cd FaultSense
-```
+Because machine failures are relatively rare, the model is evaluated using precision, recall, F1, ROC-AUC, and PR-AUC in addition to accuracy.
 
-### 2. Create a virtual environment
+## 🔍 Explainable AI
 
-Windows:
+FaultSense uses **SHAP (SHapley Additive exPlanations)** to explain individual predictions.
 
-```bash
-python -m venv .venv
-.venv\Scripts\activate
-```
+Instead of only displaying a failure probability, the application identifies the sensor and engineered features contributing to the prediction, making the model output easier to interpret.
 
-macOS/Linux:
+## 🚨 Machine Health Assessment
 
-```bash
-python3 -m venv .venv
-source .venv/bin/activate
-```
+The predicted failure probability and anomaly status are combined to classify machine condition:
 
-### 3. Install dependencies
+| Status | Description |
+|---|---|
+| 🟢 **Normal** | Low failure risk |
+| 🟡 **Warning** | Elevated failure risk or detected anomaly |
+| 🔴 **Critical** | High failure risk |
 
-```bash
-pip install -r requirements.txt
-```
+The system then generates a maintenance recommendation based on the predicted risk and machine condition.
 
-### 4. Download the dataset
+## 🛠️ Technology Stack
 
-```bash
-python download_data.py
-```
+**Python** • **Pandas** • **NumPy** • **Scikit-learn** • **XGBoost** • **SHAP** • **FastAPI** • **Streamlit** • **Matplotlib** • **Joblib** • **Pytest** • **Git**
 
-You should see `data/ai4i2020.csv` created.
+## 💡 Key Implementation Highlights
 
-### 5. Train the models
+- Built a complete machine-learning pipeline from preprocessing to prediction.
+- Engineered operational features from temperature, rotational speed, torque, and tool-wear measurements.
+- Used XGBoost for nonlinear machine-failure classification.
+- Evaluated the model using metrics suitable for imbalanced classification.
+- Integrated Isolation Forest for detecting abnormal operating conditions.
+- Implemented SHAP for model-level and prediction-level explainability.
+- Connected the ML pipeline with FastAPI for REST-based prediction access.
+- Built an interactive Streamlit interface for machine-health analysis.
+- Added rule-based maintenance recommendations based on model output.
 
-```bash
-python train.py
-```
+## 📌 Project Outcome
 
-This creates:
+FaultSense demonstrates how machine-learning predictions can be transformed into an interpretable decision-support workflow:
 
-```text
-models/failure_model.joblib
-models/baseline_model.joblib
-models/anomaly_model.joblib
-models/feature_schema.joblib
-artifacts/metrics.csv
-artifacts/run_metadata.json
-```
+**Sensor Data → ML Prediction → Anomaly Detection → Explanation → Health Status → Maintenance Recommendation**
 
-The terminal prints the test-set metrics for XGBoost.
+##  Author
 
-## Evaluation
+**Shreya S Rai**
 
-The project reports:
-
-- Accuracy
-- Precision for the failure class
-- Recall for the failure class
-- F1 score for the failure class
-- ROC-AUC
-- PR-AUC
-- Confusion-matrix counts
-
-**Why accuracy is not enough:** machine failures are a minority class. A model can obtain high accuracy while missing most failures. Recall, F1 and PR-AUC therefore provide more useful views of failure-detection performance.
-
-The exact results are generated by `python train.py` and saved to `artifacts/metrics.csv` rather than hard-coded into this README.
-
-## Run Streamlit
-
-After training:
-
-```bash
-streamlit run app.py
-```
-
-Open the local URL shown by Streamlit, normally:
-
-```text
-http://localhost:8501
-```
-
-Enter the machine operating conditions and click **Assess Machine Health**.
-
-## Run FastAPI
-
-After training:
-
-```bash
-uvicorn api:app --reload
-```
-
-API documentation:
-
-```text
-http://127.0.0.1:8000/docs
-```
-
-The prediction endpoint is:
-
-```text
-POST /predict
-```
-
-Example request:
-
-```json
-{
-  "Type": "M",
-  "air_temperature": 300.1,
-  "process_temperature": 310.2,
-  "rotational_speed": 1500,
-  "torque": 42.0,
-  "tool_wear": 120
-}
-```
-
-## Deploy on Streamlit Community Cloud
-
-1. Push the project to GitHub.
-2. Make sure `requirements.txt`, `app.py`, `src/`, and the trained model files are available to the deployed app.
-3. Open Streamlit Community Cloud and connect the GitHub repository.
-4. Select `app.py` as the main file.
-5. Deploy.
-
-For a small student project, Streamlit is sufficient for the user interface. FastAPI is included as a separate inference service to demonstrate backend API skills without making it a deployment requirement.
-
-## Explainability roadmap
-
-The model architecture is intentionally prepared for SHAP-based explanation. The next enhancement is to generate a SHAP explanation for each individual prediction and display the top contributing machine conditions in the Streamlit UI.
-
-## Project limitations
-
-- AI4I 2020 is a synthetic benchmark dataset, not live industrial telemetry.
-- The project predicts the benchmark's machine-failure target; it does **not** claim true Remaining Useful Life (RUL), because the dataset does not provide genuine time-to-failure labels.
-- Anomaly detection is an independent signal and should not be interpreted as proof of failure.
-- Thresholds for health bands and maintenance recommendations are demonstration rules, not engineering safety thresholds.
-
-## License
-
-The **project source code** is released under the MIT License. The **AI4I 2020 dataset** remains under its original CC BY 4.0 license and is attributed to the UCI Machine Learning Repository.
-
-
-## Troubleshooting
-
-If an older local copy of the dataset has slightly different CSV column
-formatting, FaultSense automatically normalizes common UCI AI4I column-name
-variants. You should not manually rename the dataset columns.
-
-If training still reports a missing required column, run:
-
-```bash
-python download_data.py
-python train.py
-```
-
-The training script prints the detected dataset columns before model training.
+MCA Student 
