@@ -2,18 +2,17 @@
 
 [![Python](https://img.shields.io/badge/Python-3.x-blue?logo=python&logoColor=white)](https://www.python.org/)
 [![XGBoost](https://img.shields.io/badge/ML-XGBoost-orange)](https://xgboost.readthedocs.io/)
-[![FastAPI](https://img.shields.io/badge/API-FastAPI-009688?logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
 [![Streamlit](https://img.shields.io/badge/UI-Streamlit-FF4B4B?logo=streamlit&logoColor=white)](https://streamlit.io/)
 
 FaultSense is an end-to-end machine learning application for predicting machine failure risk from operational sensor data.
 
-The system combines data preprocessing, feature engineering, XGBoost classification, anomaly detection, SHAP explainability, machine health assessment, maintenance recommendations, FastAPI REST APIs, and an interactive Streamlit dashboard.
+The system combines data preprocessing, feature engineering, XGBoost classification, anomaly detection, SHAP explainability, machine health assessment, maintenance recommendations, and an interactive Streamlit dashboard.
 
-##  Live Demo
+## Live Demo
 
 [Open FaultSense Live Demo](https://faultsense-6qjtnlhbg3xxvkh8jcahrq.streamlit.app/)
 
-##  Key Features
+## Key Features
 
 - Machine failure prediction using XGBoost
 - Feature engineering from machine sensor measurements
@@ -22,11 +21,10 @@ The system combines data preprocessing, feature engineering, XGBoost classificat
 - SHAP-based model explainability
 - Normal, Warning, and Critical machine-health classification
 - Automated maintenance recommendations
-- FastAPI REST API for predictions
 - Interactive Streamlit dashboard
 - Data validation and preprocessing pipeline
 
-##  Machine Learning Workflow
+## Machine Learning Workflow
 
 ```text
 Sensor Data
@@ -52,7 +50,7 @@ Machine Health Assessment
 Maintenance Recommendation
 ```
 
-##  Model Performance
+## Model Performance
 
 XGBoost is used as the primary machine-failure prediction model, with Random Forest used as a baseline.
 
@@ -69,7 +67,7 @@ The following metrics describe the existing model evaluation:
 
 Because machine failures are relatively rare, the model is evaluated using precision, recall, F1-score, ROC-AUC, and PR-AUC in addition to accuracy.
 
-##  Additional Experiments
+## Additional Experiments
 
 Additional experiments explored whether further engineered features could improve machine-failure prediction. Three features were added to the experimental preprocessing pipeline:
 
@@ -96,13 +94,13 @@ The training and test F1-scores were also compared to examine the generalization
 
 **Note:** These metrics describe the experimental evaluation. They should not be interpreted as the performance of the live deployed model unless the deployed model is retrained and evaluated using the same feature changes.
 
-##  Explainable AI
+## Explainable AI
 
 FaultSense uses **SHAP (SHapley Additive exPlanations)** to explain individual predictions.
 
 Instead of only displaying a failure probability, the application identifies the sensor and engineered features contributing to the prediction, making the model output easier to interpret.
 
-##  Machine Health Assessment
+## Machine Health Assessment
 
 The predicted failure probability and anomaly status are combined to classify machine condition:
 
@@ -114,11 +112,11 @@ The predicted failure probability and anomaly status are combined to classify ma
 
 The system then generates a maintenance recommendation based on the predicted risk and machine condition.
 
-##  Technology Stack
+## Technology Stack
 
-**Python** • **Pandas** • **NumPy** • **Scikit-learn** • **XGBoost** • **SHAP** • **FastAPI** • **Streamlit** • **Matplotlib** • **Joblib** • **Pytest** • **Git**
+**Python** • **Pandas** • **NumPy** • **Scikit-learn** • **XGBoost** • **SHAP** • **Streamlit** • **Matplotlib** • **Joblib** • **Pytest** • **Git**
 
-##  Key Implementation Highlights
+## Key Implementation Highlights
 
 - Built a machine-learning pipeline covering preprocessing, model training, and prediction.
 - Engineered operational features from temperature, rotational speed, torque, and tool-wear measurements.
@@ -128,17 +126,16 @@ The system then generates a maintenance recommendation based on the predicted ri
 - Compared training and test performance to examine model generalization.
 - Integrated Isolation Forest for detecting abnormal operating conditions.
 - Implemented SHAP for model-level and prediction-level explainability.
-- Connected the ML pipeline with FastAPI for REST-based prediction access.
 - Built an interactive Streamlit interface for machine-health analysis.
 - Added rule-based maintenance recommendations based on model output.
 
-##  Project Outcome
+## Project Outcome
 
 FaultSense demonstrates how machine-learning predictions can be transformed into an interpretable decision-support workflow:
 
 **Sensor Data → ML Prediction → Anomaly Detection → Explanation → Health Status → Maintenance Recommendation**
 
-##  Author
+## Author
 
 **Shreya S Rai**
 
